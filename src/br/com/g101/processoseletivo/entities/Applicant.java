@@ -1,4 +1,4 @@
-package entities.applicant;
+package br.com.g101.processoseletivo.entities;
 
 public class Applicant {
     private long id;
@@ -11,9 +11,7 @@ public class Applicant {
     public Applicant() {
     }
 
-    public Applicant(long id) {
-        this.id = id;
-    }
+
 
     public Applicant(String completeName, String gender, String city, String email) {
         this.completeName = new CompleteName(completeName);
@@ -59,6 +57,7 @@ public class Applicant {
     @Override
     public String toString() {
         return
+                "id='" + id + '\'' +
                 "name='" + completeName.toString() + '\'' +
                 ", gender='" + gender + '\'' +
                 ", city='" + city + '\'' +
