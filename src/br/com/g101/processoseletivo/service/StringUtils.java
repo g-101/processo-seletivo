@@ -7,11 +7,6 @@ public class StringUtils
     public static String capitalize(String s)
     {
 
-        if ((s == null) || (s.trim().length() == 0))
-        {
-            return s;
-        }
-
         s = s.toLowerCase();
         char[] cArr = s.trim().toCharArray();
         cArr[0] = Character.toUpperCase(cArr[0]);
@@ -41,7 +36,8 @@ public class StringUtils
 
     public static boolean isStringValid(String s)
     {
-        if (s.isEmpty() || s.trim().length() < 3 || s.trim().length() > 150 || !s.matches("^[\\p{L}\\s]+$"))
+        if (s.isEmpty() || s.isBlank() || s.trim().length() < 3
+                || s.trim().length() > 150 || !s.matches("^[\\p{L}\\s]+$"))
         {
             throw new IllegalArgumentException("Caracteres inválidos");
 
