@@ -1,4 +1,5 @@
 import br.com.g101.processoseletivo.entity.CompleteName;
+import br.com.g101.processoseletivo.service.StringUtils;
 
 import java.util.Scanner;
 
@@ -19,17 +20,24 @@ public class Main {
 
                 case "1":
 
-                    System.out.println("Digite o nome do candidato:");
-                    String applicantName = scanner.nextLine();
-                    System.out.println("Digite o sobrenome do candidato:");
-                    String applicantLastName = scanner.nextLine();
-                    CompleteName completeName = new CompleteName();
+                    String applicantName;
+                    String applicantLastName;
+                    CompleteName completeName;
                     System.out.println();
 
                     try
                     {
-                        completeName.isValidCompleteName(applicantName, applicantLastName);
-                        System.out.println("Nome cadastrado com sucesso");
+                        System.out.println("Digite o nome do candidato:");
+                        applicantName = scanner.nextLine();
+                        StringUtils.isStringValid(applicantName);
+                        applicantName = StringUtils.capitalize(applicantName);
+                        System.out.println("Digite o sobrenome do candidato:");
+                        applicantLastName = scanner.nextLine();
+                        StringUtils.isStringValid(applicantLastName);
+                        applicantLastName = StringUtils.capitalize(applicantLastName);
+                        completeName= new CompleteName(applicantName, applicantLastName);
+                        System.out.println(completeName);
+
 
                     }
                     catch (IllegalArgumentException e)

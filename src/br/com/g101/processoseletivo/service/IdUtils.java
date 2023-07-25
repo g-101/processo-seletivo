@@ -2,7 +2,7 @@ package br.com.g101.processoseletivo.service;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class UniqueId {
+public class IdUtils {
     private static AtomicReference<Long> currentTime =
             new AtomicReference<>(System.currentTimeMillis());
 

@@ -8,6 +8,11 @@ public class CompleteName {
     public CompleteName() {
     }
 
+    public CompleteName(String name, String lastName) {
+        this.firstName = name;
+        this.lastName = lastName;
+
+    }
     public String getFirstName() {
         return firstName;
     }
@@ -16,22 +21,7 @@ public class CompleteName {
     }
 
 
-    public void isValidCompleteName(String name, String lastName)
-    {
-        if(name.length() < 3 || name.length() > 150 || !name.matches("^[\\p{L}\\s]+$") )
-        {
-            throw new IllegalArgumentException("Nome Invalido");
 
-        }
-        if(lastName.length() < 3 || lastName.length() > 150 || !lastName.matches("^[\\p{L}\\s]+$"))
-        {
-            throw new IllegalArgumentException("Sobrenome Invalido");
-
-        }
-        this.firstName = name;
-        this.lastName = lastName;
-
-    }
     @Override
     public String toString() {
         return firstName + " " + lastName;
