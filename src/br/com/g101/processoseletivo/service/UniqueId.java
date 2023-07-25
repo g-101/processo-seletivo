@@ -1,4 +1,4 @@
-package br.com.g101.processoseletivo.services;
+package br.com.g101.processoseletivo.service;
 
 import java.util.concurrent.atomic.AtomicReference;
 
