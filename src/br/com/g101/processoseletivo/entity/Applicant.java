@@ -1,14 +1,21 @@
 package br.com.g101.processoseletivo.entity;
 
-public class Applicant {
+public class Applicant
+{
     private long id;
     private CompleteName completeName;
-    private String gender;
+    private Gender gender;
     private String city;
     private String email;
 
 
-    public Applicant() {
+    public Applicant(){}
+
+    public Applicant(long id, CompleteName completeName, Gender gender)
+    {
+        this.id = id;
+        this.completeName = completeName;
+        this.gender = gender;
     }
 
     public long getId() {
@@ -19,9 +26,9 @@ public class Applicant {
         this.id = id;
     }
 
-    public String getGender() {
-        return gender;
-    }
+
+
+
 
     public String getCity() {
         return city;
@@ -45,11 +52,10 @@ public class Applicant {
     public String toString()
     {
         return
-                "id='" + id + '\'' +
-                "name='" + completeName.toString() + '\'' +
-                ", gender='" + gender + '\'' +
-                ", city='" + city + '\'' +
-                ", email='" + email + '\'';
+                "\nid='" + id + '\'' +
+                ", name='" + completeName.toString() + '\'' +
+                ", gender='" + gender + '\'';
+
     }
 
 }

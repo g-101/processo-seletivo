@@ -1,4 +1,7 @@
+import br.com.g101.processoseletivo.entity.Applicant;
 import br.com.g101.processoseletivo.entity.CompleteName;
+import br.com.g101.processoseletivo.entity.Gender;
+import br.com.g101.processoseletivo.service.IdUtils;
 import br.com.g101.processoseletivo.service.StringUtils;
 
 import java.util.Scanner;
@@ -24,19 +27,25 @@ public class Main {
                     String applicantLastName;
                     CompleteName completeName;
                     System.out.println();
+                    System.out.println("Digite as informações do candidato");
+
 
                     try
                     {
-                        System.out.println("Digite o nome do candidato:");
+                        System.out.print("Nome:");
                         applicantName = scanner.nextLine();
                         StringUtils.isStringValid(applicantName);
                         applicantName = StringUtils.capitalize(applicantName);
-                        System.out.println("Digite o sobrenome do candidato:");
+                        System.out.print("Sobrenome:");
                         applicantLastName = scanner.nextLine();
                         StringUtils.isStringValid(applicantLastName);
                         applicantLastName = StringUtils.capitalize(applicantLastName);
                         completeName= new CompleteName(applicantName, applicantLastName);
                         System.out.println(completeName);
+
+                        Applicant applicant = new Applicant(IdUtils.nextId(), completeName, Gender.OTHER);
+                        System.out.println(applicant);
+
 
 
                     }
