@@ -36,7 +36,7 @@ public class StringUtils
 
     public static boolean isStringValid(String s)
     {
-        if (s.isEmpty() || s.isBlank() || s.trim().length() < 3
+        if (s.isEmpty() || s.isBlank() || s.trim().length() < 2
                 || s.trim().length() > 150 || !s.matches("^[\\p{L}\\s]+$"))
         {
             throw new IllegalArgumentException("Caracteres inválidos");
