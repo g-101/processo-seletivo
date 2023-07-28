@@ -7,12 +7,15 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        ApplicantsList applicantsList = new ApplicantsList();
         boolean running = true;
 
         while (running)
         {
             showMenu();
             String choice = scanner.nextLine();
+
+
 
             switch (choice)
             {
@@ -55,8 +58,14 @@ public class Main {
                         Email email = new Email(emailAddress);
 
 
-                        Applicant applicant = new Applicant(IdUtils.nextId(), completeName, Gender.OTHER, location, email);
+                        Applicant applicant = new Applicant(completeName,
+                                Gender.OTHER, location, email);
                         System.out.println(applicant);
+
+                        applicantsList.insertApplicant(applicant);
+                        applicant.setId(IdUtils.nextId());
+                        System.out.println(applicantsList.getApplicants());
+                        System.out.println(applicantsList.getTotalApplicants());
                         System.out.println();
 
 

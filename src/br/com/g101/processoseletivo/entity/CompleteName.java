@@ -19,6 +19,11 @@ public class CompleteName {
     public String getLastName() {
         return lastName;
     }
+    public String getCompleteName() {
+        return firstName + " " + lastName;
+    }
+
+
 
 
 

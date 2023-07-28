@@ -1,23 +1,25 @@
 package br.com.g101.processoseletivo.entity;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class ApplicantsDB {
-    private List<Applicant> applicants = new ArrayList();
+public class ApplicantsList {
+    private Set<Applicant> applicants = new TreeSet<>();
+
+    public ApplicantsList() {
+    }
 
     public void insertApplicant(Applicant applicant) {
         applicants.add(applicant);
     }
 
-    public List<Applicant> getApplicants() {
+    public Set<Applicant> getApplicants() {
         return applicants;
     }
 
-    // checar pelo nome
-    // checar pelo id
-    // listar candidatos
-    // add
-    // remover
-
+    // total de candidatos
+    public int getTotalApplicants() {
+        return applicants.size();
+    }
 }

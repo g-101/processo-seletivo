@@ -1,8 +1,10 @@
 package br.com.g101.processoseletivo.entity;
 
-public class Applicant
+import java.util.Objects;
+
+public class Applicant implements Comparable<Applicant>
 {
-    private long id;
+    private Long id;
     private CompleteName completeName;
     private Gender gender;
     private Location location;
@@ -11,23 +13,31 @@ public class Applicant
 
     public Applicant(){}
 
-    public Applicant(long id, CompleteName completeName, Gender gender, Location location, Email email)
+    public Applicant(CompleteName completeName, Gender gender, Location location, Email email)
     {
-        this.id = id;
         this.completeName = completeName;
         this.gender = gender;
         this.location = location;
         this.email = email;
     }
 
+    public Applicant(Long id, CompleteName completeName, Gender gender, Location location, Email email)
+    {
+        this(completeName, gender, location, email);
+        this.id = id;
 
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String toString()
     {
         return
-                "\nid='" + id + '\'' +
-                ", nome='" + completeName.toString() + '\'' +
+
+                "\nnome='" + completeName + '\'' +
                 ", gênero='" + gender + '\''+
                 ", cidade='" + location.getCity() + '\''+
                 ", estado='" + location.getState() + '\'' +
@@ -35,4 +45,22 @@ public class Applicant
 
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(email.getEmail());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Applicant applicant = (Applicant) o;
+        return Objects.equals(email.getEmail(), applicant.email);
+
+    }
+
+    @Override
+    public int compareTo(Applicant applicant) {
+        return this.email.getEmail().compareTo(applicant.email.getEmail());
+    }
 }
