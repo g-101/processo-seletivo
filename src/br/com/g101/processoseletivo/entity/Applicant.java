@@ -6,27 +6,19 @@ public class Applicant
     private CompleteName completeName;
     private Gender gender;
     private Location location;
-    private String email;
+    private Email email;
 
 
     public Applicant(){}
 
-    public Applicant(long id, CompleteName completeName, Gender gender, Location location)
+    public Applicant(long id, CompleteName completeName, Gender gender, Location location, Email email)
     {
         this.id = id;
         this.completeName = completeName;
         this.gender = gender;
         this.location = location;
+        this.email = email;
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
 
 
 
@@ -38,7 +30,8 @@ public class Applicant
                 ", nome='" + completeName.toString() + '\'' +
                 ", gênero='" + gender + '\''+
                 ", cidade='" + location.getCity() + '\''+
-                ", estado='" + location.getState() + '\'';
+                ", estado='" + location.getState() + '\'' +
+                ", email='" + email.getEmail() + '\'';
 
     }
 

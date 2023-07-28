@@ -1,6 +1,7 @@
 package br.com.g101.processoseletivo.service;
 
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class StringUtils
 {
     private StringUtils() {}
@@ -34,10 +35,10 @@ public class StringUtils
 
     }
 
-    public static boolean isStringValid(String s)
+    public static boolean isWordValid(String s)
     {
         if (s.isEmpty() || s.isBlank() || s.trim().length() < 2
-                || s.trim().length() > 150 || !s.matches("^[\\p{L}\\s]+$"))
+                || s.trim().length() > 80 || !s.matches("^[\\p{L}\\s]+$"))
         {
             throw new IllegalArgumentException("Caracteres inválidos");
 
@@ -45,5 +46,7 @@ public class StringUtils
 
         return true;
     }
+
+
 
 }

@@ -1,7 +1,4 @@
-import br.com.g101.processoseletivo.entity.Applicant;
-import br.com.g101.processoseletivo.entity.CompleteName;
-import br.com.g101.processoseletivo.entity.Gender;
-import br.com.g101.processoseletivo.entity.Location;
+import br.com.g101.processoseletivo.entity.*;
 import br.com.g101.processoseletivo.service.IdUtils;
 import br.com.g101.processoseletivo.service.StringUtils;
 
@@ -26,43 +23,48 @@ public class Main {
                     String applicantLastName;
                     String city;
                     String state;
-                    String email;
-                    System.out.println();
+                    String emailAddress;
                     System.out.println("Digite as informações do candidato");
 
 
                     try
                     {
-                        System.out.print("Nome:");
+                        System.out.print("Nome: ");
                         applicantName = scanner.nextLine();
-                        StringUtils.isStringValid(applicantName);
+                        StringUtils.isWordValid(applicantName);
                         applicantName = StringUtils.capitalize(applicantName);
 
-                        System.out.print("Sobrenome:");
+                        System.out.print("Sobrenome: ");
                         applicantLastName = scanner.nextLine();
-                        StringUtils.isStringValid(applicantLastName);
+                        StringUtils.isWordValid(applicantLastName);
                         applicantLastName = StringUtils.capitalize(applicantLastName);
                         CompleteName completeName= new CompleteName(applicantName, applicantLastName);
                         System.out.println(completeName);
 
-                        System.out.print("Cidade:");
+                        System.out.print("Cidade: ");
                         city = scanner.nextLine();
-                        StringUtils.isStringValid(city);
+                        StringUtils.isWordValid(city);
                         city = StringUtils.capitalize(city);
-                        System.out.print("Estado:");
+                        System.out.print("Estado: ");
                         state = scanner.nextLine();
-                        StringUtils.isStringValid(state);
+                        StringUtils.isWordValid(state);
                         Location location = new Location(city, state.toUpperCase());
 
-                        Applicant applicant = new Applicant(IdUtils.nextId(), completeName, Gender.OTHER, location);
+                        System.out.print("Email: ");
+                        emailAddress = scanner.nextLine();
+                        Email email = new Email(emailAddress);
+
+
+                        Applicant applicant = new Applicant(IdUtils.nextId(), completeName, Gender.OTHER, location, email);
                         System.out.println(applicant);
+                        System.out.println();
 
 
 
                     }
                     catch (IllegalArgumentException e)
                     {
-                        System.out.printf("Erro: %s%n", e.getMessage());
+                        System.out.printf("Erro: %s%n ", e.getMessage());
 
                     }
                     break;
