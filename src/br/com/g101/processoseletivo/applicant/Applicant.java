@@ -1,14 +1,15 @@
-package br.com.g101.processoseletivo.entity;
+package br.com.g101.processoseletivo.applicant;
 
 import java.util.Objects;
 
-public class Applicant implements Comparable<Applicant>
+public class Applicant
 {
     private Long id;
     private CompleteName completeName;
     private Gender gender;
     private Location location;
     private Email email;
+    private String status;
 
 
     public Applicant(){}
@@ -21,23 +22,35 @@ public class Applicant implements Comparable<Applicant>
         this.email = email;
     }
 
-    public Applicant(Long id, CompleteName completeName, Gender gender, Location location, Email email)
-    {
-        this(completeName, gender, location, email);
-        this.id = id;
 
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getEmail() {
+        return email.getEmail();
+    }
+
+
+
     @Override
     public String toString()
     {
         return
-
-                "\nnome='" + completeName + '\'' +
+                "id='" + id + '\'' +
+                "nome='" + completeName + '\'' +
                 ", gênero='" + gender + '\''+
                 ", cidade='" + location.getCity() + '\''+
                 ", estado='" + location.getState() + '\'' +
@@ -59,8 +72,5 @@ public class Applicant implements Comparable<Applicant>
 
     }
 
-    @Override
-    public int compareTo(Applicant applicant) {
-        return this.email.getEmail().compareTo(applicant.email.getEmail());
-    }
+
 }

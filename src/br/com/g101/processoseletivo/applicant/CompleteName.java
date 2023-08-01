@@ -1,4 +1,4 @@
-package br.com.g101.processoseletivo.entity;
+package br.com.g101.processoseletivo.applicant;
 
 
 public class CompleteName {

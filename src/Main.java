@@ -1,14 +1,19 @@
-import br.com.g101.processoseletivo.entity.*;
+import br.com.g101.processoseletivo.applicant.*;
 import br.com.g101.processoseletivo.service.IdUtils;
 import br.com.g101.processoseletivo.service.StringUtils;
 
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class Main {
+    private static IApplicantDAO iApplicantDAO;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ApplicantsList applicantsList = new ApplicantsList();
+        iApplicantDAO = new ApplicantMapDAO();
         boolean running = true;
+
+
 
         while (running)
         {
@@ -36,13 +41,11 @@ public class Main {
                         applicantName = scanner.nextLine();
                         StringUtils.isWordValid(applicantName);
                         applicantName = StringUtils.capitalize(applicantName);
-
                         System.out.print("Sobrenome: ");
                         applicantLastName = scanner.nextLine();
                         StringUtils.isWordValid(applicantLastName);
                         applicantLastName = StringUtils.capitalize(applicantLastName);
                         CompleteName completeName= new CompleteName(applicantName, applicantLastName);
-                        System.out.println(completeName);
 
                         System.out.print("Cidade: ");
                         city = scanner.nextLine();
@@ -57,16 +60,14 @@ public class Main {
                         emailAddress = scanner.nextLine();
                         Email email = new Email(emailAddress);
 
-
                         Applicant applicant = new Applicant(completeName,
                                 Gender.OTHER, location, email);
-                        System.out.println(applicant);
+                        startProcess(applicant);
+                        System.out.println(iApplicantDAO.getAll());
 
-                        applicantsList.insertApplicant(applicant);
-                        applicant.setId(IdUtils.nextId());
-                        System.out.println(applicantsList.getApplicants());
-                        System.out.println(applicantsList.getTotalApplicants());
-                        System.out.println();
+
+
+
 
 
 
@@ -119,4 +120,17 @@ public class Main {
 
         System.out.print("Opção: ");
     }
+
+    private static void startProcess(Applicant applicant) {
+
+        Boolean isRegistered = iApplicantDAO.register(applicant);
+        if (!isRegistered)
+        {
+            throw new IllegalArgumentException("Candidato ja participa do processo");
+
+        }
+        applicant.setStatus("Recebido");
+        System.out.println("Cadastro realizado com sucesso");
+    }
+
 }
