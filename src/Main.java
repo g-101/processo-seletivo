@@ -1,106 +1,110 @@
 import br.com.g101.processoseletivo.applicant.*;
-import br.com.g101.processoseletivo.service.IdUtils;
 import br.com.g101.processoseletivo.service.StringUtils;
 
-import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Main {
     private static IApplicantDAO iApplicantDAO;
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+
         iApplicantDAO = new ApplicantMapDAO();
+        Scanner sc = new Scanner(System.in);
         boolean running = true;
 
-
-
-        while (running)
-        {
+        while (running) {
             showMenu();
-            String choice = scanner.nextLine();
+            String choice = sc.nextLine();
 
-
-
-            switch (choice)
-            {
-
+            switch (choice) {
                 case "1":
-
                     String applicantName;
                     String applicantLastName;
                     String city;
                     String state;
                     String emailAddress;
                     System.out.println("Digite as informações do candidato");
-
-
-                    try
-                    {
+                    try {
                         System.out.print("Nome: ");
-                        applicantName = scanner.nextLine();
+                        applicantName = sc.nextLine();
                         StringUtils.isWordValid(applicantName);
                         applicantName = StringUtils.capitalize(applicantName);
                         System.out.print("Sobrenome: ");
-                        applicantLastName = scanner.nextLine();
+                        applicantLastName = sc.nextLine();
                         StringUtils.isWordValid(applicantLastName);
                         applicantLastName = StringUtils.capitalize(applicantLastName);
-                        CompleteName completeName= new CompleteName(applicantName, applicantLastName);
+                        CompleteName completeName = new CompleteName(applicantName, applicantLastName);
 
                         System.out.print("Cidade: ");
-                        city = scanner.nextLine();
+                        city = sc.nextLine();
                         StringUtils.isWordValid(city);
                         city = StringUtils.capitalize(city);
                         System.out.print("Estado: ");
-                        state = scanner.nextLine();
+                        state = sc.nextLine();
                         StringUtils.isWordValid(state);
                         Location location = new Location(city, state.toUpperCase());
 
                         System.out.print("Email: ");
-                        emailAddress = scanner.nextLine();
+                        emailAddress = sc.nextLine();
                         Email email = new Email(emailAddress);
 
                         Applicant applicant = new Applicant(completeName,
                                 Gender.OTHER, location, email);
                         startProcess(applicant);
-                        System.out.println(iApplicantDAO.getAll());
 
-
-
-
-
-
+                    } catch (IllegalArgumentException e) {
+                        System.out.print("Erro: " + e.getMessage());
 
                     }
-                    catch (IllegalArgumentException e)
-                    {
-                        System.out.printf("Erro: %s%n ", e.getMessage());
+                    break;
+
+                case "2":
+                    System.out.println(" === Marcar Entrevista ===");
+                    try {
+                        System.out.print("Id do candidato: ");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+                        scheduleInterview(id);
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.print("Erro: " + e.getMessage());
+
+                    }
+                    break;
+                case "3":
+                    System.out.println(" === Desqualificar Candidato ===");
+                    try {
+                        System.out.print("Id do candidato: ");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+                        disqualifyApplicant(id);
+
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.print("Erro: " + e.getMessage());
 
                     }
                     break;
 
                 case "0":
-
                     running = false;
                     System.out.println("Saindo do sistema...");
                     break;
-
                 default:
-
-                    System.out.println("Opção inválida. Tente novamente.");
-                    break;
-
+                  System.out.println("Opção inválida. Tente novamente.");
+                  break;
             }
-
+            System.out.println(iApplicantDAO.getAll());
         }
-        scanner.close();
+        sc.close();
+
     }
 
 
     private static void showMenu()
     {
+        System.out.println();
 
-        System.out.println("==== Sistema de RH - Processo seletivo ====");
+        System.out.println("=== Sistema de RH - Processo seletivo ===");
 
         System.out.println("Selecione uma opção:");
 
@@ -126,11 +130,30 @@ public class Main {
         Boolean isRegistered = iApplicantDAO.register(applicant);
         if (!isRegistered)
         {
-            throw new IllegalArgumentException("Candidato ja participa do processo");
+            throw new IllegalArgumentException("Candidato ja participa do processo.");
 
         }
-        applicant.setStatus("Recebido");
-        System.out.println("Cadastro realizado com sucesso");
+        iApplicantDAO.update(applicant.getId(), "Recebido");
+        System.out.println("Cadastro realizado com sucesso.");
+
+    }
+
+    private static void scheduleInterview(Integer id) {
+        Applicant applicant = iApplicantDAO.getById(id);
+        if (applicant == null || !applicant.getStatus().equals("Recebido")) {
+            throw new IllegalArgumentException("Candidato não encontrado.");
+        }
+        iApplicantDAO.update(applicant.getId(), "Qualificado");
+        System.out.println("Entrevista marcada para o candidato.");
+    }
+
+    private static void disqualifyApplicant(Integer id) {
+        Applicant applicant = iApplicantDAO.getById(id);
+        if (applicant == null) {
+            throw new IllegalArgumentException("Candidato não encontrado.");
+        }
+        iApplicantDAO.delete(applicant.getId());
+        System.out.println("Candidato desqualificado com sucesso.");
     }
 
 }

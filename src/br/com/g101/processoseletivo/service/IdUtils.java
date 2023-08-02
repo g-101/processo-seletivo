@@ -1,12 +1,11 @@
 package br.com.g101.processoseletivo.service;
 
-import java.util.concurrent.atomic.AtomicReference;
 
 public class IdUtils {
 
-    private static long id = 1;
+    private static int id = 1;
 
-    public static long nextId() {
+    public static int nextId() {
         return id++;
     }
 

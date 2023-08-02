@@ -6,7 +6,7 @@ public interface IApplicantDAO {
 
     public Boolean register(Applicant applicant);
     public Collection<Applicant> getAll();
-//    public Applicant getById(Long id);
-//    public void update(Applicant applicant);
-//    public void delete(Long id);
+    public Applicant getById(Integer id);
+    public void update(Integer id, String status);
+    public void delete(Integer id);
 }

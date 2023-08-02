@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Applicant
 {
-    private Long id;
+    private Integer id;
     private CompleteName completeName;
     private Gender gender;
     private Location location;
@@ -23,11 +23,11 @@ public class Applicant
     }
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,11 +50,12 @@ public class Applicant
     {
         return
                 "id='" + id + '\'' +
-                "nome='" + completeName + '\'' +
+                ", nome='" + completeName + '\'' +
                 ", gênero='" + gender + '\''+
                 ", cidade='" + location.getCity() + '\''+
                 ", estado='" + location.getState() + '\'' +
-                ", email='" + email.getEmail() + '\'';
+                ", email='" + email.getEmail() + '\'' +
+                ", status='" + status + '\'';
 
     }
 

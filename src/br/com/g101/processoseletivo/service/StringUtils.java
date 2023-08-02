@@ -35,7 +35,7 @@ public class StringUtils
 
     }
 
-    public static boolean isWordValid(String s)
+    public static void  isWordValid(String s)
     {
         if (s.isEmpty() || s.isBlank() || s.trim().length() < 2
                 || s.trim().length() > 80 || !s.matches("^[\\p{L}\\s]+$"))
@@ -44,7 +44,7 @@ public class StringUtils
 
         }
 
-        return true;
+
     }
 
 
