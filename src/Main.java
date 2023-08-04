@@ -1,7 +1,8 @@
 import br.com.g101.processoseletivo.applicant.*;
+import br.com.g101.processoseletivo.service.IdUtils;
 import br.com.g101.processoseletivo.service.StringUtils;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     private static IApplicantDAO iApplicantDAO;
@@ -12,11 +13,13 @@ public class Main {
         boolean running = true;
 
         while (running) {
+
             showMenu();
             String choice = sc.nextLine();
 
             switch (choice) {
                 case "1":
+
                     String applicantName;
                     String applicantLastName;
                     String city;
@@ -49,8 +52,10 @@ public class Main {
 
                         Applicant applicant = new Applicant(completeName,
                                 Gender.OTHER, location, email);
-                        startProcess(applicant);
 
+//                        System.out.println(applicantData.get(1));
+                        startProcess(applicant);
+//                        System.out.println(applicant);
                     } catch (IllegalArgumentException e) {
                         System.out.print("Erro: " + e.getMessage());
 
@@ -84,7 +89,47 @@ public class Main {
 
                     }
                     break;
+                case "4":
+                    System.out.println(" === Verificar status do candidato ===");
+                    try {
+                        System.out.print("Id do candidato: ");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+                        String status = checkApplicantStatus(id);
+                        System.out.println("Status do candidato: " + status);
 
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.print("Erro: " + e.getMessage());
+
+                    }
+                    break;
+                case "5":
+                    System.out.println(" === Aprovar candidato ===");
+                    try {
+                        System.out.print("Id do candidato: ");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+                        approveApplicant(id);
+
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.print("Erro: " + e.getMessage());
+
+                    }
+                    break;
+                case "6":
+                    System.out.println(" ===  Listar candidatos aprovados ===");
+                    try {
+
+                        getAllSuccessfulApplicants();
+
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.print("Erro: " + e.getMessage());
+
+                    }
+                    break;
                 case "0":
                     running = false;
                     System.out.println("Saindo do sistema...");
@@ -93,7 +138,7 @@ public class Main {
                   System.out.println("Opção inválida. Tente novamente.");
                   break;
             }
-            System.out.println(iApplicantDAO.getAll());
+
         }
         sc.close();
 
@@ -126,24 +171,31 @@ public class Main {
     }
 
     private static void startProcess(Applicant applicant) {
-
-        Boolean isRegistered = iApplicantDAO.register(applicant);
-        if (!isRegistered)
+        boolean isRegisteredEmail = iApplicantDAO.checkIfEmailExists(applicant.getEmail());
+        if (isRegisteredEmail)
         {
             throw new IllegalArgumentException("Candidato ja participa do processo.");
 
         }
-        iApplicantDAO.update(applicant.getId(), "Recebido");
+
+        applicant.setStatus(Status.RECEIVED.toString());
+        Integer id = IdUtils.nextId();
+        iApplicantDAO.createData(id, applicant);
+
         System.out.println("Cadastro realizado com sucesso.");
+        System.out.println(iApplicantDAO);
+
+
+
 
     }
 
     private static void scheduleInterview(Integer id) {
         Applicant applicant = iApplicantDAO.getById(id);
-        if (applicant == null || !applicant.getStatus().equals("Recebido")) {
+        if (applicant == null || !applicant.getStatus().equals(Status.RECEIVED.toString())) {
             throw new IllegalArgumentException("Candidato não encontrado.");
         }
-        iApplicantDAO.update(applicant.getId(), "Qualificado");
+        iApplicantDAO.update(id, "Qualificado");
         System.out.println("Entrevista marcada para o candidato.");
     }
 
@@ -152,8 +204,50 @@ public class Main {
         if (applicant == null) {
             throw new IllegalArgumentException("Candidato não encontrado.");
         }
-        iApplicantDAO.delete(applicant.getId());
+        iApplicantDAO.delete(id);
         System.out.println("Candidato desqualificado com sucesso.");
+
+    }
+
+    private static String checkApplicantStatus(Integer id) {
+        Applicant applicant = iApplicantDAO.getById(id);
+        if (applicant == null) {
+            throw new IllegalArgumentException("Candidato não encontrado.");
+        }
+        return applicant.getStatus();
+
+    }
+
+    private static void approveApplicant(Integer id) {
+        Applicant applicant = iApplicantDAO.getById(id);
+        if (applicant == null || !applicant.getStatus().equals(Status.QUALIFIED.toString())) {
+            throw new IllegalArgumentException("Candidato não encontrado.");
+        }
+        iApplicantDAO.update(id, "Aprovado");
+        System.out.println("Candidato aprovado com sucesso.");
+    }
+
+    private static void getAllSuccessfulApplicants() {
+       Collection<Applicant> allApplicants = iApplicantDAO.getAll();
+       int count = 0;
+        if (allApplicants.isEmpty() ) {
+            throw new IllegalArgumentException("Não há candidatos aprovados.");
+        }
+
+        for ( Applicant a : allApplicants) {
+            if (a.getStatus().equals(Status.APPROVED.toString())) {
+                System.out.println(a.getCompleteName());
+            }
+            else {
+                count++;
+            }
+        }
+
+        if(count > 0) {
+            throw new IllegalArgumentException("Não há candidatos aprovados.");
+        }
+
+
     }
 
 }

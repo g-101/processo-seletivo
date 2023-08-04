@@ -1,16 +1,15 @@
 package br.com.g101.processoseletivo.applicant;
 
-import java.util.Objects;
+import java.util.*;
 
 public class Applicant
 {
-    private Integer id;
+
     private CompleteName completeName;
     private Gender gender;
     private Location location;
-    private Email email;
     private String status;
-
+    private Email email;
 
     public Applicant(){}
 
@@ -22,41 +21,31 @@ public class Applicant
         this.email = email;
     }
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public String getCompleteName() {
+        return completeName.getCompleteName();
     }
 
     public String getEmail() {
         return email.getEmail();
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
+    public String getStatus() {
+        return status;
+    }
 
     @Override
-    public String toString()
-    {
-        return
-                "id='" + id + '\'' +
-                ", nome='" + completeName + '\'' +
-                ", gênero='" + gender + '\''+
-                ", cidade='" + location.getCity() + '\''+
-                ", estado='" + location.getState() + '\'' +
-                ", email='" + email.getEmail() + '\'' +
-                ", status='" + status + '\'';
-
+    public String toString() {
+        return " Applicant{" +
+                "completeName=" + completeName +
+                ", gender=" + gender +
+                ", location=" + location +
+                ", status='" + status + '\'' +
+                ", email=" + email.getEmail() +
+                '}';
     }
 
     @Override

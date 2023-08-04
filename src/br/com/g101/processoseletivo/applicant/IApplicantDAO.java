@@ -2,11 +2,13 @@ package br.com.g101.processoseletivo.applicant;
 
 import java.util.Collection;
 
+
 public interface IApplicantDAO {
 
-    public Boolean register(Applicant applicant);
-    public Collection<Applicant> getAll();
-    public Applicant getById(Integer id);
-    public void update(Integer id, String status);
-    public void delete(Integer id);
+   Boolean checkIfEmailExists(String email);
+    void createData(Integer id, Applicant applicant);
+    Collection<Applicant> getAll();
+    Applicant getById(Integer id);
+    void update(Integer id, String status);
+    void delete(Integer id);
 }

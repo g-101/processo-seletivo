@@ -1,54 +1,77 @@
 package br.com.g101.processoseletivo.applicant;
 
-import br.com.g101.processoseletivo.service.IdUtils;
 
 import java.util.*;
 
-public class ApplicantMapDAO implements IApplicantDAO{
-    private Map<String, Applicant> applicantsByEmail;
-    private Map<Integer, Applicant> applicantsById;
-
+public class ApplicantMapDAO implements IApplicantDAO {
+    private Map<Integer, Applicant > applicantsMap;
 
 
     public ApplicantMapDAO() {
+        this.applicantsMap = new TreeMap<>();
 
-        this.applicantsByEmail =  new TreeMap<>();
-        this.applicantsById =  new TreeMap<>();
     }
 
+    @Override
+    public Boolean checkIfEmailExists(String email) {
+        boolean isExists = false;
+        if (!applicantsMap.isEmpty()) {
+            for (Integer key : applicantsMap.keySet()) {
+//                System.out.println("Chave: " + key + ", Valor: " + applicantsMap.get(key));
+                if (applicantsMap.get(key).getEmail().equals(email)) {
+                    isExists = true;
+                    break;
+                }
+            }
+        }
+        return isExists;
+    }
 
     @Override
-    public Boolean register(Applicant applicant) {
-        if (this.applicantsByEmail.containsKey(applicant.getEmail())) {
-            return false;
-        }
-        this.applicantsByEmail.put(applicant.getEmail(), applicant);
-        applicant.setId(IdUtils.nextId());
-        this.applicantsById.put(applicant.getId(), applicant);
-        return true;
+    public void createData(Integer id, Applicant applicant) {
+        applicantsMap.put(id, applicant);
     }
 
     @Override
     public Collection<Applicant> getAll() {
-        return this.applicantsById.values();
+
+        return applicantsMap.values();
     }
+
+
 
     @Override
     public Applicant getById(Integer id) {
-        return this.applicantsById.get(id);
+
+       return applicantsMap.get(id);
 
     }
 
     @Override
     public void update(Integer id, String status) {
-        Applicant applicant = this.applicantsById.get(id);
-        applicant.setStatus(status);
+        for (Integer key : applicantsMap.keySet()) {
+            if (Objects.equals(key, id)) {
+                applicantsMap.get(key).setStatus(status);
+                break;
+
+            }
+        }
+    }
+
+    @Override
+    public void delete(Integer id) {
+        applicantsMap.remove(id);
 
 
     }
 
     @Override
-    public void delete(Integer id) {
-        applicantsById.remove(id);
+    public String toString() {
+        return "ApplicantMapDAO{ " + applicantsMap + " }";
     }
 }
+
+
+
+
+
