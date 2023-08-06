@@ -5,7 +5,7 @@ import java.util.Collection;
 
 public interface IApplicantDAO {
 
-   Boolean checkIfEmailExists(String email);
+    boolean checkIfEmailExists(String email);
     void createData(Integer id, Applicant applicant);
     Collection<Applicant> getAll();
     Applicant getById(Integer id);

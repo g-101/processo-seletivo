@@ -1,4 +1,6 @@
 import br.com.g101.processoseletivo.applicant.*;
+import br.com.g101.processoseletivo.email.Email;
+import br.com.g101.processoseletivo.exception.ApplicantException;
 import br.com.g101.processoseletivo.service.IdUtils;
 import br.com.g101.processoseletivo.service.StringUtils;
 
@@ -52,14 +54,15 @@ public class Main {
 
                         Applicant applicant = new Applicant(completeName,
                                 Gender.OTHER, location, email);
-
-//                        System.out.println(applicantData.get(1));
                         startProcess(applicant);
-//                        System.out.println(applicant);
+
                     } catch (IllegalArgumentException e) {
                         System.out.print("Erro: " + e.getMessage());
 
+                    } catch (ApplicantException.ApplicantAlreadyRegistered e) {
+                        System.out.print("Erro: " + e.getMessage());
                     }
+
                     break;
 
                 case "2":
@@ -73,6 +76,8 @@ public class Main {
                     } catch (IllegalArgumentException e) {
                         System.out.print("Erro: " + e.getMessage());
 
+                    } catch (ApplicantException.ApplicantNotFound e) {
+                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "3":
@@ -87,6 +92,8 @@ public class Main {
                     } catch (IllegalArgumentException e) {
                         System.out.print("Erro: " + e.getMessage());
 
+                    } catch (ApplicantException.ApplicantNotFound e) {
+                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "4":
@@ -102,6 +109,8 @@ public class Main {
                     } catch (IllegalArgumentException e) {
                         System.out.print("Erro: " + e.getMessage());
 
+                    } catch (ApplicantException.ApplicantNotFound e) {
+                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "5":
@@ -116,6 +125,8 @@ public class Main {
                     } catch (IllegalArgumentException e) {
                         System.out.print("Erro: " + e.getMessage());
 
+                    } catch (ApplicantException.ApplicantNotFound e) {
+                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "6":
@@ -128,6 +139,8 @@ public class Main {
                     } catch (IllegalArgumentException e) {
                         System.out.print("Erro: " + e.getMessage());
 
+                    } catch (ApplicantException.ApplicantNotFound e) {
+                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "0":
@@ -170,11 +183,11 @@ public class Main {
         System.out.print("Opção: ");
     }
 
-    private static void startProcess(Applicant applicant) {
+    private static void startProcess(Applicant applicant) throws ApplicantException.ApplicantAlreadyRegistered {
         boolean isRegisteredEmail = iApplicantDAO.checkIfEmailExists(applicant.getEmail());
         if (isRegisteredEmail)
         {
-            throw new IllegalArgumentException("Candidato ja participa do processo.");
+            throw new ApplicantException.ApplicantAlreadyRegistered("Candidato ja participa do processo.");
 
         }
 
@@ -190,48 +203,48 @@ public class Main {
 
     }
 
-    private static void scheduleInterview(Integer id) {
+    private static void scheduleInterview(Integer id) throws ApplicantException.ApplicantNotFound {
         Applicant applicant = iApplicantDAO.getById(id);
         if (applicant == null || !applicant.getStatus().equals(Status.RECEIVED.toString())) {
-            throw new IllegalArgumentException("Candidato não encontrado.");
+            throw new ApplicantException.ApplicantNotFound("Candidato não encontrado.");
         }
         iApplicantDAO.update(id, "Qualificado");
         System.out.println("Entrevista marcada para o candidato.");
     }
 
-    private static void disqualifyApplicant(Integer id) {
+    private static void disqualifyApplicant(Integer id) throws ApplicantException.ApplicantNotFound {
         Applicant applicant = iApplicantDAO.getById(id);
         if (applicant == null) {
-            throw new IllegalArgumentException("Candidato não encontrado.");
+            throw new ApplicantException.ApplicantNotFound("Candidato não encontrado.");
         }
         iApplicantDAO.delete(id);
         System.out.println("Candidato desqualificado com sucesso.");
 
     }
 
-    private static String checkApplicantStatus(Integer id) {
+    private static String checkApplicantStatus(Integer id) throws ApplicantException.ApplicantNotFound {
         Applicant applicant = iApplicantDAO.getById(id);
         if (applicant == null) {
-            throw new IllegalArgumentException("Candidato não encontrado.");
+            throw new ApplicantException.ApplicantNotFound("Candidato não encontrado.");
         }
         return applicant.getStatus();
 
     }
 
-    private static void approveApplicant(Integer id) {
+    private static void approveApplicant(Integer id) throws ApplicantException.ApplicantNotFound {
         Applicant applicant = iApplicantDAO.getById(id);
         if (applicant == null || !applicant.getStatus().equals(Status.QUALIFIED.toString())) {
-            throw new IllegalArgumentException("Candidato não encontrado.");
+            throw new ApplicantException.ApplicantNotFound("Candidato não encontrado.");
         }
         iApplicantDAO.update(id, "Aprovado");
         System.out.println("Candidato aprovado com sucesso.");
     }
 
-    private static void getAllSuccessfulApplicants() {
+    private static void getAllSuccessfulApplicants() throws ApplicantException.ApplicantNotFound {
        Collection<Applicant> allApplicants = iApplicantDAO.getAll();
        int count = 0;
         if (allApplicants.isEmpty() ) {
-            throw new IllegalArgumentException("Não há candidatos aprovados.");
+            throw new ApplicantException.ApplicantNotFound("Não há candidatos aprovados.");
         }
 
         for ( Applicant a : allApplicants) {
@@ -244,7 +257,7 @@ public class Main {
         }
 
         if(count > 0) {
-            throw new IllegalArgumentException("Não há candidatos aprovados.");
+            throw new ApplicantException.ApplicantNotFound("Não há candidatos aprovados.");
         }
 
 

@@ -1,5 +1,7 @@
 package br.com.g101.processoseletivo.applicant;
 
+import br.com.g101.processoseletivo.email.Email;
+
 import java.util.*;
 
 public class Applicant

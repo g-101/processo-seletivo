@@ -13,7 +13,7 @@ public class ApplicantMapDAO implements IApplicantDAO {
     }
 
     @Override
-    public Boolean checkIfEmailExists(String email) {
+    public boolean checkIfEmailExists(String email) {
         boolean isExists = false;
         if (!applicantsMap.isEmpty()) {
             for (Integer key : applicantsMap.keySet()) {

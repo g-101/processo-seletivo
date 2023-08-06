@@ -1,4 +1,4 @@
-package br.com.g101.processoseletivo.applicant;
+package br.com.g101.processoseletivo.email;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
