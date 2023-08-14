@@ -1,8 +1,8 @@
 import br.com.g101.processoseletivo.applicant.*;
 import br.com.g101.processoseletivo.email.Email;
 import br.com.g101.processoseletivo.exception.ApplicantException;
-import br.com.g101.processoseletivo.service.IdUtils;
-import br.com.g101.processoseletivo.service.StringUtils;
+import br.com.g101.processoseletivo.util.IdUtils;
+import br.com.g101.processoseletivo.util.InputUtils;
 
 import java.util.*;
 
@@ -31,21 +31,21 @@ public class Main {
                     try {
                         System.out.print("Nome: ");
                         applicantName = sc.nextLine();
-                        StringUtils.isWordValid(applicantName);
-                        applicantName = StringUtils.capitalize(applicantName);
+                        InputUtils.isWordValid(applicantName);
+                        applicantName = InputUtils.capitalize(applicantName);
                         System.out.print("Sobrenome: ");
                         applicantLastName = sc.nextLine();
-                        StringUtils.isWordValid(applicantLastName);
-                        applicantLastName = StringUtils.capitalize(applicantLastName);
+                        InputUtils.isWordValid(applicantLastName);
+                        applicantLastName = InputUtils.capitalize(applicantLastName);
                         CompleteName completeName = new CompleteName(applicantName, applicantLastName);
 
                         System.out.print("Cidade: ");
                         city = sc.nextLine();
-                        StringUtils.isWordValid(city);
-                        city = StringUtils.capitalize(city);
+                        InputUtils.isWordValid(city);
+                        city = InputUtils.capitalize(city);
                         System.out.print("Estado: ");
                         state = sc.nextLine();
-                        StringUtils.isWordValid(state);
+                        InputUtils.isWordValid(state);
                         Location location = new Location(city, state.toUpperCase());
 
                         System.out.print("Email: ");
@@ -56,11 +56,9 @@ public class Main {
                                 Gender.OTHER, location, email);
                         startProcess(applicant);
 
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException | ApplicantException.ApplicantAlreadyRegistered e) {
                         System.out.print("Erro: " + e.getMessage());
 
-                    } catch (ApplicantException.ApplicantAlreadyRegistered e) {
-                        System.out.print("Erro: " + e.getMessage());
                     }
 
                     break;
@@ -69,64 +67,55 @@ public class Main {
                     System.out.println(" === Marcar Entrevista ===");
                     try {
                         System.out.print("Id do candidato: ");
-                        int id = sc.nextInt();
-                        sc.nextLine();
+                        int id = InputUtils.isOnlyDigit(sc.nextLine());
                         scheduleInterview(id);
 
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException | ApplicantException.ApplicantNotFound e) {
                         System.out.print("Erro: " + e.getMessage());
 
-                    } catch (ApplicantException.ApplicantNotFound e) {
-                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "3":
                     System.out.println(" === Desqualificar Candidato ===");
                     try {
                         System.out.print("Id do candidato: ");
-                        int id = sc.nextInt();
-                        sc.nextLine();
+                        int id = InputUtils.isOnlyDigit(sc.nextLine());
+
                         disqualifyApplicant(id);
 
 
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException | ApplicantException.ApplicantNotFound e) {
                         System.out.print("Erro: " + e.getMessage());
 
-                    } catch (ApplicantException.ApplicantNotFound e) {
-                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "4":
                     System.out.println(" === Verificar status do candidato ===");
                     try {
                         System.out.print("Id do candidato: ");
-                        int id = sc.nextInt();
-                        sc.nextLine();
+                        int id = InputUtils.isOnlyDigit(sc.nextLine());
+
                         String status = checkApplicantStatus(id);
                         System.out.println("Status do candidato: " + status);
 
 
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException | ApplicantException.ApplicantNotFound e) {
                         System.out.print("Erro: " + e.getMessage());
 
-                    } catch (ApplicantException.ApplicantNotFound e) {
-                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "5":
                     System.out.println(" === Aprovar candidato ===");
                     try {
                         System.out.print("Id do candidato: ");
-                        int id = sc.nextInt();
-                        sc.nextLine();
+                        int id = InputUtils.isOnlyDigit(sc.nextLine());
+
                         approveApplicant(id);
 
 
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException | ApplicantException.ApplicantNotFound e) {
                         System.out.print("Erro: " + e.getMessage());
 
-                    } catch (ApplicantException.ApplicantNotFound e) {
-                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "6":
@@ -136,11 +125,9 @@ public class Main {
                         getAllSuccessfulApplicants();
 
 
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException | ApplicantException.ApplicantNotFound e) {
                         System.out.print("Erro: " + e.getMessage());
 
-                    } catch (ApplicantException.ApplicantNotFound e) {
-                        System.out.print("Erro: " + e.getMessage());
                     }
                     break;
                 case "0":

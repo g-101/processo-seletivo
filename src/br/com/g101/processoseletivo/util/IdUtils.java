@@ -1,4 +1,4 @@
-package br.com.g101.processoseletivo.service;
+package br.com.g101.processoseletivo.util;
 
 
 public class IdUtils {
